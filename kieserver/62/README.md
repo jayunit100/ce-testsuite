@@ -17,7 +17,7 @@ This aplication, basically, only prints the salutation of the given Person's nam
         commands.add((Command<?>) CommandFactory.newInsert(person));
         commands.add((Command<?>) CommandFactory.newFireAllRules());
         commands.add((Command<?>) CommandFactory.newQuery("greetings", "get greeting"));
-        return CommandFactory.newBatchExecution(commands, "HelloRulesSession");
+        return CommandFactory.newatchExecution(commands, "HelloRulesSession");
 ```
 
 ### How to run the tests

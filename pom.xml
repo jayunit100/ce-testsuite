@@ -100,7 +100,37 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<repositories>
+		<!-- <repository> <id>1rhat</id> <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</url> </repository> -->
+		<repository>
+			<id>2rhat</id>
+			<url>https://maven.repository.redhat.com/techpreview/all/</url>
+		</repository>
+		<repository>
+			<id>3rhat</id>
+			<url>https://maven.repository.redhat.com/earlyaccess/all/</url>
+		</repository>
+		<repository>
+			<id>4rhat</id>
+			<url>https://repository.jboss.org/</url>
+		</repository>
+		<repository>
+			<id>5rhat</id>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+		</repository>
+		<repository>
+			<id>6rhat</id>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>7rhat</id>
+			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-uploads/</url>
+		</repository>
+		<repository>
+			<id>8rhat</id>
+			<url>http://repository.jboss.org/nexus/content/groups/developer/</url>
+		</repository>
+	</repositories>
 	<dependencyManagement>
 		<dependencies>
 
