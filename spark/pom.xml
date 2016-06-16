@@ -13,14 +13,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Artifact Configuration -->
-    <artifactId>decisionserver-ce-testsuite</artifactId>
+    <artifactId>jdg-ce-testsuite</artifactId>
     <packaging>jar</packaging>
-    <name>Decision Server CE Testsuite</name>
-    <description>Decision Server Cloud Enablement Testsuite</description>
+    <name>JDG CE Testsuite</name>
+    <description>JDG Cloud Enablement Testsuite</description>
 
     <dependencies>
 
-        <!-- TODO -->
+        <!-- Tests - add any external existing tests here -->
 
         <!-- EAP testunit deps -->
 
@@ -33,7 +33,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
-
 
         <!-- Test Utils -->
 
@@ -51,12 +50,13 @@
 
         <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-ce-httpclient</artifactId>
+            <artifactId>arquillian-ce-shrinkwrap</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-ce-shrinkwrap</artifactId>
+            <artifactId>arquillian-ce-fabric8</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -78,23 +78,14 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- KIE -->
-
+        <!--
+            sparkVersion = "1.3.0"
+            scalaVersion = "2.10"
+        -->
         <dependency>
-            <groupId>org.kie.server</groupId>
-            <artifactId>kie-server-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.kie.server</groupId>
-            <artifactId>kie-server-client</artifactId>
-        </dependency>
-
-        <!-- Dependencies needed to use JMS/AMQ -->
-
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_1.3.0:2.10</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -115,11 +106,11 @@
 
         <!-- Run tests against wildfly -->
         <profile>
-            <id>decisionserver</id>
+            <id>jdg</id>
 
             <activation>
                 <property>
-                    <name>decisionserver</name>
+                    <name>jdg</name>
                 </property>
             </activation>
 
@@ -157,6 +148,9 @@
                             <includes>
                                 <include>org/jboss/**/*Test.java</include>
                             </includes>
+                            <excludes>
+                                <exclude>**/JdgQueryTest.java</exclude>
+                            </excludes>
                             <systemPropertyVariables>
                                 <!-- Custom DNS resolver for OpenShift routes -->
                                 <sun.net.spi.nameservice.provider.1>dns,CEArquillianNameService</sun.net.spi.nameservice.provider.1>
@@ -172,3 +166,7 @@
         </profile>
     </profiles>
 </project>
+
+
+
+

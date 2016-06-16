@@ -14,16 +14,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Artifact Configuration -->
-    <artifactId>kieserver63-ce-testsuite</artifactId>
+    <artifactId>kieserver62-ce-testsuite</artifactId>
     <packaging>jar</packaging>
-    <name>KIE Server v6.3 CE Testsuite</name>
-    <description>KIE Server Cloud Enablement Testsuite includes tests for decision server and process server</description>
-
-    <properties>
-      <!-- Decision server -->
-      <version.jboss.bom.brms>6.3.0.GA-redhat-3</version.jboss.bom.brms>
-      <version.org.kie>6.4.0.Final-redhat-3</version.org.kie>
-    </properties>
+    <name>KIE Server v6.2 CE Testsuite</name>
+    <description>Decision Server Cloud Enablement Testsuite</description>
 
     <dependencies>
 
@@ -103,6 +97,7 @@
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-all</artifactId>
         </dependency>
+
     </dependencies>
 
     <profiles>
@@ -121,11 +116,11 @@
 
         <!-- Run tests against wildfly -->
         <profile>
-            <id>kieserver63</id>
+            <id>kieserver62</id>
 
             <activation>
                 <property>
-                    <name>kieserver63</name>
+                    <name>kieserver62</name>
                 </property>
             </activation>
 
