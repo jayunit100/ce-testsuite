@@ -117,6 +117,7 @@ public class SparkTest {
         war.addPackages(true, "io.netty");
         war.addPackages(true,"com.esotericsoftware");
         war.addPackages(true,"com.twitter");
+        war.addPackages(true,"com.codehale");
         return war;
     }
 
