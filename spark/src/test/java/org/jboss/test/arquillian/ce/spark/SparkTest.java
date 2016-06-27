@@ -77,6 +77,8 @@ import org.junit.runner.RunWith;
         labels = "app=spark",
         parameters = {
                 @TemplateParameter(name = "MASTER_NAME", value="jspark"),
+                // use this if running outside the VPN.
+                @TemplateParameter(name = "SPARK_IMAGE", value="jayunit100/openshift-spark:latest")
         }
 )
 @RoleBinding(roleRefName = "view", userName = "system:serviceaccount:${kubernetes.namespace}:jdg-service-account")
@@ -114,7 +116,7 @@ public class SparkTest {
         war.addPackages(true,"org.slf4j");
         war.addPackages(true,"org.spark_project.guava");
         war.addPackages(true,"com.google.common");
-        war.addPackages(true, "io.netty");
+        war.addPackages(true,"io.netty");
         war.addPackages(true,"com.esotericsoftware");
         war.addPackages(true,"com.twitter");
         war.addPackages(true,"com.codehale");
