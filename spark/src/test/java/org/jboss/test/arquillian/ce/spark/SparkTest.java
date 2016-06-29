@@ -76,9 +76,9 @@ import org.junit.runner.RunWith;
         url="https://gist.githubusercontent.com/jayunit100/3fad23e42a22e473fff7a45947bd3102/raw/ccedbb3020d98267753ba758c9f739d587b3aae5/xpass-spark",
         labels = "app=spark",
         parameters = {
-                @TemplateParameter(name = "MASTER_NAME", value="jspark"),
-                // use this if running outside the VPN.
-                @TemplateParameter(name = "SPARK_IMAGE", value="jayunit100/openshift-spark:latest")
+                @TemplateParameter(name = "MASTER_NAME", value="jspark")
+		// use this if running outside the VPN.
+                // @TemplateParameter(name = "SPARK_IMAGE", value="jayunit100/openshift-spark:latest")
         }
 )
 @RoleBinding(roleRefName = "view", userName = "system:serviceaccount:${kubernetes.namespace}:jdg-service-account")
@@ -98,7 +98,7 @@ public class SparkTest {
     @Deployment
     public static WebArchive getDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "run-in-pod.war");
-        war.setWebXML(new StringAsset("<web-app/>"));
+        war.setWebXML(new StringAsset("<web-app><context-param><param-name>resteasy.scan.providers</param-name><param-value>false</param-value></context-param></web-app>"));
         war.addPackage(org.jboss.arquillian.test.impl.EventTestRunnerAdaptor.class.getPackage());
         war.addPackage(Arquillian.class.getPackage());
         war.addPackage(org.apache.spark.internal.Logging.class.getPackage());
@@ -119,8 +119,24 @@ public class SparkTest {
         war.addPackages(true,"io.netty");
         war.addPackages(true,"com.esotericsoftware");
         war.addPackages(true,"com.twitter");
-        war.addPackages(true,"com.codehale");
-        return war;
+        war.addPackages(true,"com.codahale");
+        war.addPackages(true,"org.json4s");
+	war.addPackages(true,"org.spark_project.jetty");
+war.addPackages(true,"org.apache.spark.static");
+
+	// no op
+	// war.addPackages(true,"org.apache.spark.ui");
+	// war.addAsResource(Package.getPackage("org.apache.spark"),"/");
+	// war.addAsResource(org.apache.spark.SparkConf.class.getPackage(),"org/apache/spark");
+	
+	// NullPointerException
+	// war.addAsResource(org.apache.spark.ui.WebUI.class.getPackage(),"static");
+
+	war.addAsResource(org.apache.spark.ui.WebUI.class.getPackage(),"static/additional-metrics.js");
+	// leads to resteasy conflict
+	// war.addPackages(true, "org.glassfish.jersey.server");
+
+	return war;
     }
 
     @Test
@@ -137,12 +153,6 @@ public class SparkTest {
 
         // Setup nss stuffs. otherwise spark wont have  a user name and will throw a null exception .
         String[] cmd = new String[]{"/bin/bash",
-                //"-c",
-                //"cat /etc/passwd > /tmp/passwd",
-                //"echo \"$(id -u):x:$(id -u):$(id -g):dynamic uid:$SPARK_HOME:/bin/false\" >> /tmp/passwd",
-                //"export NSS_WRAPPER_PASSWD=/tmp/passwd",
-                //"export NSS_WRAPPER_GROUP=/etc/group",
-                //"export LD_PRELOAD=libnss_wrapper.so"
                 "export SPARK_USER=jayunit100",
         };
         Process pr = Runtime.getRuntime().exec(cmd);
@@ -154,10 +164,12 @@ public class SparkTest {
 
 
         // now run the test.
-        SparkConf conf = new SparkConf().setMaster("jspark").setAppName("spark-test");
+        SparkConf conf = new SparkConf().setMaster("spark://jspark:9090").setAppName("spark-test");
+
+	conf.set("spark.ui.enabled","false");
 
         JavaSparkContext sc = new JavaSparkContext(conf);
-
+	
         List<String> uniqueHosts = sc.parallelize(new ArrayList<Integer>(100)).map(
                 new Function<Integer, String>() {
                     @Override

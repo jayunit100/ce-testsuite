@@ -81,14 +81,25 @@
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.10</artifactId>
-            <version>2.0.0-preview</version>
-            <!-- avoid conflict with arquillian jackson, which requires readerFor -->
-           <exclusions>
+          <version>2.0.0-preview</version>
+    	    <exclusions>
                 <exclusion>
                     <artifactId>com.fasterxml.jackson.core</artifactId>
                     <groupId>jackson-databind</groupId>
                 </exclusion>
-            </exclusions>
+		<exclusion>
+		    <artifactId>org.glassfish.jersey.core</artifactId>
+		    <groupId>jersey-server</groupId>
+            	</exclusion>
+		<exclusion>
+		    <artifactId>org.glassfish.jersey.containers</artifactId>
+		    <groupId>jersey-container-servlet</groupId>
+		</exclusion>
+		<exclusion>
+		    <artifactId>org.glassfish.jersey.containers</artifactId>
+		    <groupId>jersey-container-servlet-core</groupId>
+		</exclusion>	
+	   </exclusions>
         </dependency>
 
         <!--  TODO Spark exclusion should be sufficient to make arquillian work.
